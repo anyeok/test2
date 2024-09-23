@@ -1,6 +1,7 @@
 package com.example.springboottest.article;
 
 import com.example.springboottest.DataNotFoundException;
+import com.example.springboottest.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,12 @@ public class ArticleService {
         }
     }
 
-    public void create(String title, String content) {
+    public void create(String title, String content, SiteUser siteUser) {
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
         article.setCreateDate(LocalDateTime.now());
+        article.setAuthor(siteUser);
         this.articleRepository.save(article);
     }
 

@@ -1,5 +1,7 @@
 package com.example.springboottest.article;
 
+import com.example.springboottest.user.SiteUser;
+import com.example.springboottest.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,12 +20,12 @@ import java.util.List;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private final UserService userService;
 
     @GetMapping("/list")
-    public String articlelist(Model model, @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+    public String articleList(Model model, @RequestParam(value = "keyword", defaultValue = "") String keyword) {
         List<Article> articleList = this.articleService.getList(keyword);
         model.addAttribute("articleList", articleList);
-        model.addAttribute("keyword", keyword);
         return "article_list";
     }
 
@@ -36,17 +38,20 @@ public class ArticleController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String articlecreate() {
+    public String articlecreate(ArticleForm articleForm) {
         return "article_form";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String create(@RequestParam(value = "title") String title, @RequestParam(value = "content") String content) {
-        this.articleService.create(title, content);
-        return "article_list";
+    public String aritcleCreate(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            return "article_form";
+        }
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        this.articleService.create(articleForm.getTitle(), articleForm.getContent(), siteUser);
+        return "redirect:/article/list";
     }
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String articlemodify(ArticleForm articleForm, @PathVariable("id") Integer id, Principal principal) {

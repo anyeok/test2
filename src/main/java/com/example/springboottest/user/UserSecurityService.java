@@ -33,9 +33,4 @@ public class UserSecurityService implements UserDetailsService {
 
         return new User(user.getUsername(), user.getPassword(), authorities);
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

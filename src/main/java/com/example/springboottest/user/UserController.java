@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping("/signup")
-    private String signup(UserCreateForm userCreateForm) {
+    @GetMapping("signup")
+    public String signup(UserCreateForm userCreateForm) {
         return "signup_form";
     }
 

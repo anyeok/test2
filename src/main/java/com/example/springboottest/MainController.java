@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
     @GetMapping("/")
     public String root() {
-        return "redirect/article/list";
+        return "redirect:/article/list";
     }
 }

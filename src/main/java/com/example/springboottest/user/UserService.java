@@ -13,19 +13,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SiteUser create(String username, String password, String usernickname) {
+    public SiteUser create(String username, String usernickname, String password) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
         user.setUsernickname(usernickname);
+        user.setPassword(passwordEncoder.encode(password));
         this.userRepository.save(user);
         return user;
     }
 
     public SiteUser getUser(String username) {
-        Optional<SiteUser> siteUserOptional = this.userRepository.findByusername(username);
-        if (siteUserOptional.isPresent()) {
-            return siteUserOptional.get();
+        Optional<SiteUser> siteUser = this.userRepository.findByusername(username);
+        if (siteUser.isPresent()) {
+            return siteUser.get();
         } else {
             throw new DataNotFoundException("siteuser not found");
         }

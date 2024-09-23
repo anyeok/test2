@@ -33,18 +33,19 @@ public class ArticleController {
     public String articledetail(Model model, @PathVariable("id") Integer id) {
         Article article = articleService.getArticle(id);
         model.addAttribute("article", article);
-        return "article_form";
+        return "article_detail";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String articlecreate(ArticleForm articleForm) {
+    public String articlecreate(Model model, ArticleForm articleForm) {
+        model.addAttribute("articleForm", articleForm);
         return "article_form";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String aritcleCreate(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal) {
+    public String aritcleCreate(@ModelAttribute("articleForm") @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "article_form";
         }

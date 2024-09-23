@@ -1,7 +1,6 @@
 package com.example.springboottest.article;
 
 import com.example.springboottest.DataNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
